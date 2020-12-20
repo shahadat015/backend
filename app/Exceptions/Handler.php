@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Exceptions;
+
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+class Handler extends ExceptionHandler
+{
+    /**
+     * A list of the exception types that are not reported.
+     *
+     * @var array
+     */
+    protected $dontReport = [
+        //
+    ];
+
+    /**
+     * A list of the inputs that are never flashed for validation exceptions.
+     *
+     * @var array
+     */
+    protected $dontFlash = [
+        'password',
+        'password_confirmation',
+    ];
+
+    /**
+     * Register the exception handling callbacks for the application.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            return response()->json(['message' => 'Not found'], 404);
+        });
+        $this->renderable(function (ModelNotFoundException $e, $request) {
+            return response()->json(["message" => "Does not exists any {$e->getModel()} with the specified identificator"], 404);
+        });
+        $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
+            return response()->json(['message' => 'The specified method for this requests is invalid'], 405);
+        });
+    }
+}
