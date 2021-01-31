@@ -5,14 +5,24 @@
 composer update
 ```
 
-### Run migration command
+### Create .env file and generate app key
 ```
-php artisan migrate
+php artisan key:generate
 ```
 
-### Insert Demo Data
+### Run migration command and insert demo data
 ```
-php artisan db:seed
+php artisan migrate --seed
+```
+
+### Generate storage Link
+```
+php artisan storage:link
+```
+
+### Generate secret key
+```
+php artisan jwt:secret
 ```
 
 ### Go to dashboard using these credentials
